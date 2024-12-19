@@ -1,10 +1,12 @@
 ﻿@model ProdutoAPI.Models.Produto
-
+@{
+    Layout = "_Layout";  // Especifica o layout a ser usado para essa view
+}
 @{
     ViewData["Title"] = "Criar Produto";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h5>@ViewData["Title"]</h5>
 
 <form asp-action="Create" method="post">
     @Html.AntiForgeryToken()
@@ -29,6 +31,8 @@
             <span class="text-danger">@ViewData.ModelState["Preco"].Errors[0].ErrorMessage</span>
         }
     </div>
+
+    <hr />
 
     <button type="submit" class="btn btn-primary">Criar</button>
 </form>

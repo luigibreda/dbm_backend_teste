@@ -1,5 +1,9 @@
-﻿<a href="@Url.Action("Create", "Produto")" class="btn btn-success">Adicionar Novo Produto</a>
+﻿@{
+    Layout = "_Layout";  // Especifica o layout a ser usado para essa view
+}
 
+<a href="@Url.Action("Create", "Produto")" class="btn btn-success">Adicionar Novo Produto</a>
+<hr />
 <table class="table">
     <thead>
         <tr>
