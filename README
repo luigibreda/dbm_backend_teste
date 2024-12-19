@@ -1,0 +1,98 @@
+
+# Documentação do Projeto - API Produto
+
+## Estrutura do Projeto
+
+A estrutura do projeto é organizada em camadas, cada uma com responsabilidades distintas. Abaixo está a estrutura de diretórios do projeto:
+
+```
+/src
+  /ProdutoAPI
+    ProdutoAPI.csproj
+    Program.cs
+    Startup.cs (se aplicável)
+    Controllers/
+    Models/
+    Views/
+```
+
+
+
+## Descrição das Camadas e Responsabilidades
+
+1. **Camada de Controladores (Controllers)**:
+   - Responsável por definir os endpoints da API e controlar o fluxo das requisições HTTP.
+   - Os controladores recebem as requisições, validam as entradas e interagem com a camada de serviço/repositório para retornar os resultados.
+   
+2. **Camada de Dados (Data)**:
+   - Contém a classe `AppDbContext` que gerencia a conexão com o banco de dados e as operações de CRUD.
+   - Utiliza o Entity Framework Core para interagir com o banco de dados, aplicando as migrações e gerenciando as entidades.
+
+3. **Camada de Interfaces (Interfaces)**:
+   - Define as interfaces para os repositórios que abstraem a interação com a camada de dados.
+   - `IProdutoRepository` é um exemplo de interface que define os métodos para realizar operações relacionadas ao produto.
+
+4. **Camada de Modelos (Models)**:
+   - Contém as classes de modelo, que representam as entidades no banco de dados.
+   - `Produto.cs` é um exemplo de modelo que define as propriedades e validações do produto.
+
+5. **Camada de Repositórios (Repositories)**:
+   - Implementa as interfaces definidas na camada de `Interfaces`.
+   - `ProdutoRepository.cs` é a implementação que utiliza `AppDbContext` para realizar operações de banco de dados relacionadas aos produtos.
+
+6. **Camada de Validadores (Validators)**:
+   - Utiliza o FluentValidation para validar as entradas de dados antes de serem processadas.
+   - `ProdutoValidator.cs` contém as regras de validação para garantir que os dados enviados estejam corretos.
+
+## Explicação sobre a Escolha de Tecnologias e Padrões de Projeto
+
+- **.NET 8**: Escolhemos o .NET como a tecnologia principal para o desenvolvimento da API, devido à sua robustez, alta performance e boa integração com bancos de dados relacionais. O .NET oferece uma excelente plataforma para construção de APIs e tem suporte nativo para o Entity Framework Core, facilitando a interação com o banco de dados.
+  
+- **FluentValidation**: Utilizado para validar dados de entrada de forma elegante e eficiente. Ao usar o FluentValidation, podemos centralizar as regras de validação em uma única camada e manter a lógica de validação separada da lógica de negócios.
+
+- **Entity Framework Core**: Usado para realizar operações de CRUD com o banco de dados. Ele permite uma integração fácil e eficiente com bancos de dados SQL Server, permitindo migrações e gerenciamento de entidades de forma simplificada.
+
+- **Docker**: Utilizado para facilitar a construção e a execução da API em ambientes consistentes. Com Docker, podemos criar uma imagem da aplicação e executá-la em qualquer ambiente sem a necessidade de configuração adicional.
+
+- **Swagger**: Implementado para fornecer uma interface interativa para testar os endpoints da API diretamente pelo navegador. Facilita o desenvolvimento e a documentação da API.
+
+## Desafios Encontrados Durante o Desenvolvimento e Como Foram Solucionados
+
+1. **Problemas com Migrações do Entity Framework**:
+   - Inicialmente, tivemos dificuldades em aplicar as migrações corretamente no banco de dados em containers Docker.
+   - **Solução**: Garantimos que a aplicação aplicasse as migrações automaticamente durante a inicialização, utilizando `context.Database.Migrate()` no arquivo `Program.cs`.
+
+2. **Configuração do Docker para APIs .NET**:
+   - Havia desafios na configuração correta do Dockerfile, principalmente relacionados ao `ENTRYPOINT` para executar a aplicação.
+   - **Solução**: Ajustamos o `ENTRYPOINT` para apontar corretamente para o arquivo da aplicação e corrigimos a estrutura da publicação para garantir que os arquivos fossem copiados corretamente para o container.
+
+3. **Validação de Dados e Mensagens de Erro**:
+   - A validação de dados no FluentValidation exigiu ajustes finos para garantir que todas as regras de negócios fossem aplicadas corretamente.
+   - **Solução**: Centralizamos as validações na camada de validadores e garantimos que as mensagens de erro fossem claras e específicas para os usuários.
+
+## Plano de Testes
+
+O plano de testes para o projeto foca em cobrir os principais cenários de funcionamento da API, garantindo que as funcionalidades críticas estejam funcionando conforme esperado. Abaixo estão os cenários cobertos pelos testes unitários:
+
+### **Cenários de Testes Unitários**:
+
+1. **Testes de Produto**:
+   - **Criar Produto**: Verifica se a criação de um novo produto está funcionando corretamente, com validações adequadas.
+   - **Atualizar Produto**: Testa a atualização de um produto existente.
+   - **Excluir Produto**: Valida a exclusão de um produto existente.
+   - **Buscar Produto**: Verifica se a busca por produtos por ID e outros parâmetros está funcionando corretamente.
+
+2. **Testes de Validação**:
+   - **Produto Incompleto**: Verifica se um produto incompleto (com campos obrigatórios ausentes) retorna a mensagem de erro correta.
+   - **Produto com Preço Inválido**: Testa se um produto com preço inválido retorna a validação correta.
+
+3. **Testes de Integração com o Banco de Dados**:
+   - **Migração**: Verifica se as migrações do banco de dados são aplicadas corretamente no ambiente de desenvolvimento e produção.
+   - **Conexão com o Banco**: Valida se a aplicação está conseguindo se conectar ao banco de dados e realizar operações de CRUD.
+
+4. **Testes de API (Usando Swagger)**:
+   - **Endpoints de CRUD**: Testa os endpoints de criação, leitura, atualização e exclusão de produtos para garantir que a API esteja respondendo corretamente às requisições HTTP.
+
+---
+
+Com isso, você tem uma documentação clara e detalhada do seu projeto! Caso precise de mais detalhes ou ajustes, estou à disposição.
