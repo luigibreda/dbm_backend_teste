@@ -5,3 +5,6 @@
 /.vs
 /ProdutoAPI/bin/Debug/net8.0
 /ProdutoAPI/obj
+/ProdutoAPI.Tests/bin
+/ProdutoAPI.Tests/CRUD.cs
+/ProdutoAPI.Tests/obj
