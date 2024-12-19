@@ -10,12 +10,13 @@ A estrutura do projeto é organizada em camadas, cada uma com responsabilidades 
   /ProdutoAPI
     ProdutoAPI.csproj
     Program.cs
-    Startup.cs (se aplicável)
     Controllers/
+    Data/
     Models/
+    Interfaces/
+    Repositories/
     Views/
 ```
-
 
 
 ## Descrição das Camadas e Responsabilidades
@@ -56,20 +57,6 @@ A estrutura do projeto é organizada em camadas, cada uma com responsabilidades 
 
 - **Swagger**: Implementado para fornecer uma interface interativa para testar os endpoints da API diretamente pelo navegador. Facilita o desenvolvimento e a documentação da API.
 
-## Desafios Encontrados Durante o Desenvolvimento e Como Foram Solucionados
-
-1. **Problemas com Migrações do Entity Framework**:
-   - Inicialmente, tivemos dificuldades em aplicar as migrações corretamente no banco de dados em containers Docker.
-   - **Solução**: Garantimos que a aplicação aplicasse as migrações automaticamente durante a inicialização, utilizando `context.Database.Migrate()` no arquivo `Program.cs`.
-
-2. **Configuração do Docker para APIs .NET**:
-   - Havia desafios na configuração correta do Dockerfile, principalmente relacionados ao `ENTRYPOINT` para executar a aplicação.
-   - **Solução**: Ajustamos o `ENTRYPOINT` para apontar corretamente para o arquivo da aplicação e corrigimos a estrutura da publicação para garantir que os arquivos fossem copiados corretamente para o container.
-
-3. **Validação de Dados e Mensagens de Erro**:
-   - A validação de dados no FluentValidation exigiu ajustes finos para garantir que todas as regras de negócios fossem aplicadas corretamente.
-   - **Solução**: Centralizamos as validações na camada de validadores e garantimos que as mensagens de erro fossem claras e específicas para os usuários.
-
 ## Plano de Testes
 
 O plano de testes para o projeto foca em cobrir os principais cenários de funcionamento da API, garantindo que as funcionalidades críticas estejam funcionando conforme esperado. Abaixo estão os cenários cobertos pelos testes unitários:
@@ -82,17 +69,102 @@ O plano de testes para o projeto foca em cobrir os principais cenários de funci
    - **Excluir Produto**: Valida a exclusão de um produto existente.
    - **Buscar Produto**: Verifica se a busca por produtos por ID e outros parâmetros está funcionando corretamente.
 
-2. **Testes de Validação**:
-   - **Produto Incompleto**: Verifica se um produto incompleto (com campos obrigatórios ausentes) retorna a mensagem de erro correta.
-   - **Produto com Preço Inválido**: Testa se um produto com preço inválido retorna a validação correta.
-
-3. **Testes de Integração com o Banco de Dados**:
-   - **Migração**: Verifica se as migrações do banco de dados são aplicadas corretamente no ambiente de desenvolvimento e produção.
-   - **Conexão com o Banco**: Valida se a aplicação está conseguindo se conectar ao banco de dados e realizar operações de CRUD.
-
-4. **Testes de API (Usando Swagger)**:
+2. **Testes de API (Usando Swagger)**:
    - **Endpoints de CRUD**: Testa os endpoints de criação, leitura, atualização e exclusão de produtos para garantir que a API esteja respondendo corretamente às requisições HTTP.
 
----
+3. **Testes de API (Usando Postman)**:
+   - **Endpoints de CRUD**: Criei uma coleção com os endpoints para testar pelo Postman.
 
-Com isso, você tem uma documentação clara e detalhada do seu projeto! Caso precise de mais detalhes ou ajustes, estou à disposição.
+
+
+
+# Como Rodar o Projeto
+
+Este guia descreve as etapas para rodar o projeto "ProdutoAPI" desde a instalação até a execução no ambiente de desenvolvimento.
+
+## Etapa 1: Pré-requisitos
+
+Antes de rodar o projeto, certifique-se de ter os seguintes itens instalados:
+
+1. **Docker**:
+   - Baixe e instale o Docker a partir de [aqui](https://www.docker.com/get-started).
+
+2. **.NET SDK** (caso deseje rodar localmente sem o Docker):
+   - Baixe e instale o SDK mais recente a partir de [aqui](https://dotnet.microsoft.com/download).
+
+3. **Visual Studio Code** (ou qualquer editor de sua preferência):
+   - Baixe e instale o Visual Studio Code a partir de [aqui](https://code.visualstudio.com/).
+
+## Etapa 2: Rodando com Docker
+
+1. **Criar a Imagem do Docker**
+
+   Execute o comando para criar a imagem Docker para o projeto:
+
+   `docker build -t produto-api .`
+
+   O comando irá construir a imagem utilizando o `Dockerfile` presente no projeto e nomear a imagem como `produto-api`.
+
+2. **Rodar o Container**
+
+   Após criar a imagem, execute o container com o seguinte comando:
+
+   `docker run -p 5000:80 produto-api`
+
+   Este comando executa o container e mapeia a porta 80 do container para a porta 5000 da sua máquina local. Assim, você poderá acessar a API pelo endereço `http://localhost:5000`.
+
+## Etapa 3: Rodando Localmente (sem Docker)
+
+Caso prefira rodar o projeto localmente (sem Docker), siga as etapas abaixo:
+
+1. **Restaurar Dependências**
+
+   Navegue até o diretório do projeto e execute o comando para restaurar as dependências:
+
+   `dotnet restore`
+
+2. **Executar a Aplicação**
+
+   Execute o comando para rodar a aplicação localmente:
+
+   `dotnet run`
+
+   A API será iniciada e você poderá acessá-la em `http://localhost:5000`.
+
+## Etapa 4: Acessando a API
+
+Após rodar o container ou a aplicação localmente, a API estará acessível através do endereço:
+
+http://localhost:5000
+
+## Etapa 5: Banco de Dados e Migrations
+
+### 1. Criar a Migration
+
+Se for a primeira vez que você está rodando o projeto ou se houve mudanças no modelo de dados, você precisará criar a migration para o banco de dados.
+
+Para isso, execute o seguinte comando na raiz do projeto (onde o `ProdutoAPI.csproj` está localizado):
+
+`dotnet ef migrations add InitialCreate`
+
+Este comando irá gerar uma migration chamada `InitialCreate` com as alterações do modelo de dados.
+
+### 2. Atualizar o Banco de Dados
+
+Após criar a migration, execute o seguinte comando para aplicar as mudanças no banco de dados:
+
+`dotnet ef database update`
+
+Isso criará o banco de dados e aplicará as migrations necessárias de acordo com o modelo da aplicação.
+
+### 3. Verificando a Conexão
+
+Para garantir que a migration foi aplicada corretamente e o banco de dados está configurado, você pode verificar a conexão e acessar os dados diretamente através da API.
+
+Se você estiver usando Docker, o processo de execução do container também irá aplicar a migration automaticamente, como configurado no `Program.cs`. Caso contrário, siga as etapas acima para rodar localmente.
+
+### Observações
+
+- O comando `dotnet ef database update` deve ser executado toda vez que uma nova migration for adicionada.
+- Certifique-se de que a string de conexão no arquivo `appsettings.json` esteja corretamente configurada para o banco de dados que deseja utilizar.
+
