@@ -1,16 +1,19 @@
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ProdutoAPI.Data;
+using ProdutoAPI.Interfaces;
+using ProdutoAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers()
     .AddFluentValidation(config =>
     {
         config.RegisterValidatorsFromAssemblyContaining<Program>();
     });
+
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,10 +32,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

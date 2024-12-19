@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ProdutoAPI.Models.Produto>
+
+<h1>Lista de Produtos</h1>
+
+<a href="@Url.Action("Create", "Produto")" class="btn btn-success">Adicionar Novo Produto</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Model)
+        {
+            <tr>
+                <td>@produto.Id</td>
+                <td>@produto.Nome</td>
+                <td>@produto.Descricao</td>
+                <td>@produto.Preco</td>
+            </tr>
+        }
+    </tbody>
+</table>
