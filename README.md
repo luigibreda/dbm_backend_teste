@@ -168,3 +168,34 @@ Se você estiver usando Docker, o processo de execução do container também ir
 - O comando `dotnet ef database update` deve ser executado toda vez que uma nova migration for adicionada.
 - Certifique-se de que a string de conexão no arquivo `appsettings.json` esteja corretamente configurada para o banco de dados que deseja utilizar.
 
+## Prints das Telas
+
+### 1. Tela de Listagem
+
+A tela de listagem exibe todos os produtos registrados na aplicação. Veja a captura de tela abaixo:
+
+![Tela de Listagem](ProdutoAPI/Public/listagem.png)
+
+### 2. Testes Unitários
+
+Abaixo está a captura de tela dos testes unitários sendo executados:
+
+![Testes Unitários](ProdutoAPI/Public/testes_unitarios.png)
+
+### 3. Tela de Edição
+
+A tela de edição permite alterar os detalhes de um produto. Veja como ela se apresenta:
+
+![Tela de Edição](ProdutoAPI/Public/editar.png)
+
+### 4. Tela de Adição
+
+Na tela de adição, é possível cadastrar novos produtos. Veja a captura abaixo:
+
+![Tela de Adição](ProdutoAPI/Public/adicionar.png)
+
+### 5. Swagger
+
+O Swagger está disponível para facilitar o teste das rotas da API. Abaixo está uma captura de tela da interface do Swagger:
+
+![Swagger](ProdutoAPI/Public/swagger.png)
