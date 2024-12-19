@@ -52,26 +52,50 @@ namespace ProdutoAPI.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(int id, Produto produto)
-        //{
-        //    if (id != produto.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var produto = await _produtoRepository.GetById(id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+            return View(produto);
+        }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _produtoRepository.Update(produto);
-        //        return RedirectToAction(nameof(Index));
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Produto produto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(produto);
+            }
 
-        //    return View(produto);
-        //}
+            var produtoExistente = await _produtoRepository.GetById(produto.Id);
+            if (produtoExistente == null)
+            {
+                return NotFound();
+            }
+
+            produtoExistente.Nome = produto.Nome;
+            produtoExistente.Descricao = produto.Descricao;
+
+            // Convertendo o preço para decimal antes de salvar
+            produtoExistente.Preco = produto.Preco;
+
+            await _produtoRepository.Update(produtoExistente);
+            return RedirectToAction(nameof(Index));
+        }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
+            var produto = await _produtoRepository.GetById(id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
             await _produtoRepository.Delete(id);
             return RedirectToAction(nameof(Index));
         }

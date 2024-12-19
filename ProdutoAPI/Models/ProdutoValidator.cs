@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using ProdutoAPI.Interfaces;
 using ProdutoAPI.Models;
-using ProdutoAPI.Repositories; // Exemplo de namespace para seu repositório
 
 public class ProdutoValidator : AbstractValidator<Produto>
 {
@@ -11,7 +10,7 @@ public class ProdutoValidator : AbstractValidator<Produto>
         RuleFor(p => p.Nome)
             .NotEmpty().WithMessage("O nome é obrigatório.")
             .MaximumLength(100).WithMessage("O nome não pode exceder 100 caracteres.")
-            .Must(nome => !produtoRepository.ExisteProdutoComNome(nome))
+            .Must((produto, nome) => !produtoRepository.ExisteProdutoComNome(nome, produto.Id))
             .WithMessage("Já existe um produto com esse nome.");
 
         // Validação do preço

@@ -1,16 +1,13 @@
-﻿@model IEnumerable<ProdutoAPI.Models.Produto>
+﻿<a href="@Url.Action("Create", "Produto")" class="btn btn-success">Adicionar Novo Produto</a>
 
-<h1>Lista de Produtos</h1>
-
-<a href="@Url.Action("Create", "Produto")" class="btn btn-success">Adicionar Novo Produto</a>
-
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>ID</th>
             <th>Nome</th>
             <th>Descrição</th>
             <th>Preço</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +17,15 @@
                 <td>@produto.Id</td>
                 <td>@produto.Nome</td>
                 <td>@produto.Descricao</td>
-                <td>@produto.Preco</td>
+                <td>@produto.Preco.ToString("C")</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Produto", new { id = produto.Id })" class="btn btn-warning btn-sm">Editar</a>
+
+                    <form asp-action="Delete" asp-controller="Produto" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@produto.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');">Excluir</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

@@ -48,9 +48,10 @@ namespace ProdutoAPI.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-        public bool ExisteProdutoComNome(string nome)
+        public bool ExisteProdutoComNome(string nome, int produtoId)
         {
-            return _context.Produtos.Any(p => p.Nome == nome);
+            return _context.Produtos
+                .Any(p => p.Nome == nome && p.Id != produtoId); // Verifica se existe um produto com o nome diferente do produto atual
         }
     }
 }
