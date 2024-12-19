@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProdutoAPI.Interfaces;
 using ProdutoAPI.Models;
 using System.Threading.Tasks;
@@ -8,10 +10,12 @@ namespace ProdutoAPI.Controllers
     public class ProdutoController : Controller
     {
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IValidator<Produto> _produtoValidator;
 
-        public ProdutoController(IProdutoRepository produtoRepository)
+        public ProdutoController(IProdutoRepository produtoRepository, IValidator<Produto> produtoValidator)
         {
             _produtoRepository = produtoRepository;
+            _produtoValidator = produtoValidator;
         }
 
         public async Task<IActionResult> Index()
@@ -35,16 +39,17 @@ namespace ProdutoAPI.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(Produto produto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _produtoRepository.Add(produto);
-                return RedirectToAction("Index"); 
+                return View(produto); // Retorna a view com erros de validação
             }
 
-            return View(produto); 
+            // Adicionar o produto ao banco de dados
+            _produtoRepository.Add(produto);
+
+            return RedirectToAction("Index");
         }
 
         //[HttpPost]

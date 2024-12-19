@@ -1,7 +1,9 @@
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ProdutoAPI.Data;
 using ProdutoAPI.Interfaces;
+using ProdutoAPI.Models;
 using ProdutoAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,7 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddTransient<IValidator<Produto>, ProdutoValidator>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

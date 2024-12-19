@@ -11,5 +11,6 @@ namespace ProdutoAPI.Interfaces
         Task Add(Produto produto);
         Task Update(Produto produto);
         Task Delete(int id);
+        bool ExisteProdutoComNome(string nome);
     }
 }
