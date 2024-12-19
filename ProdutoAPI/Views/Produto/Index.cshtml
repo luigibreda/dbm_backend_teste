@@ -25,12 +25,35 @@
                 <td>
                     <a href="@Url.Action("Edit", "Produto", new { id = produto.Id })" class="btn btn-warning btn-sm">Editar</a>
 
-                    <form asp-action="Delete" asp-controller="Produto" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@produto.Id" />
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');">Excluir</button>
-                    </form>
+                    <!-- Botão de exclusão -->
+                    <button type="button" class="btn btn-danger btn-sm"
+                            onclick="confirmDelete(@produto.Id)">
+                        Excluir
+                    </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm('Tem certeza que deseja excluir este produto?')) {
+            // Enviar a requisição DELETE usando AJAX
+            fetch(`/Produto/Delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Produto excluído com sucesso!');
+                        location.reload(); // Recarregar a página para refletir a exclusão
+                    } else {
+                        alert('Erro ao excluir o produto.');
+                    }
+                });
+        }
+    }
+</script>

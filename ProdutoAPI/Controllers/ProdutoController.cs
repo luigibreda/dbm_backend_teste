@@ -87,7 +87,7 @@ namespace ProdutoAPI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             var produto = await _produtoRepository.GetById(id);
@@ -96,8 +96,8 @@ namespace ProdutoAPI.Controllers
                 return NotFound();
             }
 
-            await _produtoRepository.Delete(id);
-            return RedirectToAction(nameof(Index));
+            await _produtoRepository.Delete(id); // Chama o repositório para excluir o produto
+            return Ok(); // Retorna OK para confirmar que foi excluído com sucesso
         }
     }
 }
