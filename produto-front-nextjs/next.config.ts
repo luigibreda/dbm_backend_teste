@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    reactStrictMode: true, // Ajuda a identificar problemas de renderização
+    reactStrictMode: true, // Ajuda a identificar problemas de renderizaÃ§Ã£o
     swcMinify: true,       // Melhora a performance do build e comprime arquivos
     async rewrites() {
         return [
