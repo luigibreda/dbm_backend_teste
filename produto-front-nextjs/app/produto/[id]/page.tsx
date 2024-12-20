@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Produto {
@@ -13,6 +13,7 @@ interface Produto {
 
 export default function ProdutoPage({ params }: { params: { id: string } }) {
   const [produto, setProduto] = useState<Produto | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); 
 
   useEffect(() => {
     const { id } = params;
@@ -42,10 +43,23 @@ export default function ProdutoPage({ params }: { params: { id: string } }) {
       (prod) => prod.id === parseInt(id)
     );
 
-    if (produtoEncontrado) {
-      setProduto(produtoEncontrado);
-    }
+    setTimeout(() => {
+      if (produtoEncontrado) {
+        setProduto(produtoEncontrado);
+      } else {
+        setProduto(null);
+      }
+      setLoading(false); 
+    }, 1000); 
   }, [params]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner/>
+      </div>
+    ); 
+  }
 
   if (!produto) {
     return <p>Produto não encontrado!</p>;
@@ -70,7 +84,7 @@ export default function ProdutoPage({ params }: { params: { id: string } }) {
       </div>
 
       <Breadcrumbs />
-      
+
       <div className="mb-6">
         <Input
           label="Nome"
