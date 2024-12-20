@@ -1,15 +1,16 @@
-'use client';  
+"use client";
 
-import { Produto } from '@/interfaces/produto';  
-import { Button, Input } from '@nextui-org/react';
-import { useState } from 'react';
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { Produto } from "@/interfaces/produto";
+import { Button, Input } from "@nextui-org/react";
+import { useState } from "react";
 
 export default function CriarProdutoPage() {
   const [novoProduto, setNovoProduto] = useState<Produto>({
     id: 0,
-    nome: '',
-    descricao: '',
-    preco: ''
+    nome: "",
+    descricao: "",
+    preco: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,17 +22,17 @@ export default function CriarProdutoPage() {
   };
 
   const handleSave = () => {
-    console.log('Produto criado', novoProduto);
+    console.log("Produto criado", novoProduto);
   };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-semibold">Criar Produto</h1>
-        <p className="text-lg text-gray-500">
-          Edite as informações do produto
-        </p>
+        <p className="text-lg text-gray-500">Edite as informações do produto</p>
       </div>
+
+      <Breadcrumbs />
 
       <div className="mb-6">
         <Input

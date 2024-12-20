@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Table, Button, Spacer, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input } from '@nextui-org/react';
 import Link from 'next/link';
-import api from '@/api';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 interface Produto {
   id: number;
@@ -17,17 +17,14 @@ export default function ProdutosPage() {
   const [filtro, setFiltro] = useState<string>('');
 
   useEffect(() => {
-    // Simulação de dados com mock
     const produtosMock = [
       { id: 1, nome: 'Produto 1', descricao: 'Descrição do Produto 1', preco: 'R$ 50,00' },
       { id: 2, nome: 'Produto 2', descricao: 'Descrição do Produto 2', preco: 'R$ 100,00' },
       { id: 3, nome: 'Produto 3', descricao: 'Descrição do Produto 3', preco: 'R$ 150,00' },
     ];
 
-    // Definindo os dados mock no estado
     setProdutos(produtosMock);
 
-    // Se preferir, pode manter a chamada da API como está e adicionar um fallback para mockar os dados em caso de erro
     // api.get('/produtos')
     //   .then((res) => setProdutos(res.data))
     //   .catch((err) => {
@@ -36,7 +33,6 @@ export default function ProdutosPage() {
     //   });
   }, []);
 
-  // Função para filtrar os produtos
   const produtosFiltrados = produtos.filter((produto) =>
     produto.nome.toLowerCase().includes(filtro.toLowerCase())
   );
@@ -50,6 +46,8 @@ export default function ProdutosPage() {
         <p className="text-lg text-gray-500">Gerencie os produtos da sua loja</p>
       </div>
 
+      <Breadcrumbs />
+      
       {/* Filtro de produtos */}
       <div className="flex justify-between items-center mb-6">
         <div className="w-full max-w-md">
@@ -61,7 +59,7 @@ export default function ProdutosPage() {
           />
         </div>
         <div className="w-full max-w-xs ml-4">
-          <Link href="/produtos/criar">
+          <Link href="/produto/criar">
             <Button color="primary" size="lg" fullWidth>
               Criar Produto
             </Button>
@@ -87,15 +85,14 @@ export default function ProdutosPage() {
               <TableCell>{produto.preco}</TableCell>
               <TableCell>
                 <div style={{ display: 'flex', gap: '10px' }}>
-                  <Link href={`/produtos/${produto.id}`}>
+                  <Link href={`/produto/${produto.id}`}>
                     <Button color="primary" size="sm">Editar</Button>
                   </Link>
                   <Button
                     variant="bordered"
                     size="sm"
                     color="danger"
-                    onClick={() => console.log('Delete', produto.id)}
-                  >
+                    onPress={() => console.log('Delete', produto.id)}                  >
                     Excluir
                   </Button>
                 </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button, Input } from "@nextui-org/react";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface Produto {
   id: number;
@@ -68,6 +69,8 @@ export default function ProdutoPage({ params }: { params: { id: string } }) {
         </p>
       </div>
 
+      <Breadcrumbs />
+      
       <div className="mb-6">
         <Input
           label="Nome"
