@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourPassword123!   # Defina uma senha forte
+    ports:
+      - "1433:1433"
+    networks:
+      - produto-net
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  # Backend .NET 8
+  backend:
+    build:
+      context: ./ProdutoAPI
+      dockerfile: Dockerfile
+    container_name: produto-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ProdutoDB;User Id=sa;Password=YourPassword123! # Connection string para o SQL Server
+    ports:
+      - "5000:80"  # Mapeia a porta do backend para 5000
+    depends_on:
+      - sqlserver
+    networks:
+      - produto-net
+    volumes:
+      - ./ProdutoAPI:/app
+
+  # Frontend Next.js
+  frontend:
+    build:
+      context: ./produto-front-nextjs
+      dockerfile: Dockerfile
+    container_name: produto-frontend
+    ports:
+      - "3000:3000"  # Mapeia a porta 3000 para o frontend Next.js
+    networks:
+      - produto-net
+    volumes:
+      - ./produto-front-nextjs:/app
+    depends_on:
+      - backend
+
+networks:
+  produto-net:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+    driver: local

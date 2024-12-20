@@ -1,4 +1,4 @@
-'use client';
+"use client"
 
 import { useState, useEffect } from "react";
 import { Button, Input, Spinner } from "@nextui-org/react";
@@ -11,54 +11,66 @@ interface Produto {
   preco: string;
 }
 
-export default function ProdutoPage({ params }: { params: { id: string } }) {
+export default function ProdutoPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const [produto, setProduto] = useState<Produto | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [id, setId] = useState<string>("");
+
+  console.log(id);
 
   useEffect(() => {
-    const { id } = params;
+    const fetchData = async () => {
+      const { id } = await params;
+      setId(id);
 
-    const produtosMock = [
-      {
-        id: 1,
-        nome: "Produto 1",
-        descricao: "Descrição do Produto 1",
-        preco: "R$ 50,00",
-      },
-      {
-        id: 2,
-        nome: "Produto 2",
-        descricao: "Descrição do Produto 2",
-        preco: "R$ 100,00",
-      },
-      {
-        id: 3,
-        nome: "Produto 3",
-        descricao: "Descrição do Produto 3",
-        preco: "R$ 150,00",
-      },
-    ];
+      const produtosMock = [
+        {
+          id: 1,
+          nome: "Produto 1",
+          descricao: "Descrição do Produto 1",
+          preco: "R$ 50,00",
+        },
+        {
+          id: 2,
+          nome: "Produto 2",
+          descricao: "Descrição do Produto 2",
+          preco: "R$ 100,00",
+        },
+        {
+          id: 3,
+          nome: "Produto 3",
+          descricao: "Descrição do Produto 3",
+          preco: "R$ 150,00",
+        },
+      ];
 
-    const produtoEncontrado = produtosMock.find(
-      (prod) => prod.id === parseInt(id)
-    );
+      const produtoEncontrado = produtosMock.find(
+        (prod) => prod.id === parseInt(id)
+      );
 
-    setTimeout(() => {
-      if (produtoEncontrado) {
-        setProduto(produtoEncontrado);
-      } else {
-        setProduto(null);
-      }
-      setLoading(false); 
-    }, 1000); 
+      setTimeout(() => {
+        if (produtoEncontrado) {
+          setProduto(produtoEncontrado);
+        } else {
+          setProduto(null);
+        }
+        setLoading(false);
+      }, 1000);
+    };
+
+    fetchData();
   }, [params]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Spinner/>
+        <Spinner />
       </div>
-    ); 
+    );
   }
 
   if (!produto) {
@@ -107,10 +119,7 @@ export default function ProdutoPage({ params }: { params: { id: string } }) {
         />
       </div>
 
-      <Button
-        color="primary"
-        onPress={() => console.log("Salvar produto", produto)}
-      >
+      <Button color="primary" onPress={() => console.log("Salvar produto", produto)}>
         Salvar
       </Button>
     </div>

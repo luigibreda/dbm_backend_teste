@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Table, Button, Spacer, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input } from '@nextui-org/react';
+import { Table, Button, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input } from '@nextui-org/react';
 import Link from 'next/link';
 import Breadcrumbs from '@/components/Breadcrumbs';
 

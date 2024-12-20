@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { AvatarIcon, Button } from "@nextui-org/react"; // Importando o componente Button do NextUI
+import { Button } from "@nextui-org/react"; // Importando o componente Button do NextUI
 
 export default function Home() {
   return (
