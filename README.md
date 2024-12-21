@@ -1,9 +1,9 @@
 
-# Documentação do Projeto - API Produto
+# Documentação do Projeto - API Produto 
 
-## Estrutura do Projeto
+## Estrutura do Projeto ( API .NET 8 )
 
-A estrutura do projeto é organizada em camadas, cada uma com responsabilidades distintas. Abaixo está a estrutura de diretórios do projeto:
+A estrutura do projeto da API é organizada em camadas, cada uma com responsabilidades distintas. Abaixo está a estrutura de diretórios do projeto:
 
 ```
 /src
@@ -18,33 +18,53 @@ A estrutura do projeto é organizada em camadas, cada uma com responsabilidades 
     Views/
 ```
 
-## Prints das Telas
+## Prints das Telas NextJS
 
-### 1. Tela de Listagem
+### 1. Tela de Listagem ( NextJS )
+
+A tela de listagem exibe todos os produtos registrados na aplicação. Veja a captura de tela abaixo:
+
+![Tela de Listagem](ProdutoAPI/Public/listagem_nextjs.png)
+
+### 2. Tela de Edição ( NextJS )
+
+A tela de edição permite alterar os detalhes de um produto. Veja como ela se apresenta:
+
+![Tela de Edição](ProdutoAPI/Public/editar_nextjs.png)
+
+### 3. Tela de Adição ( NextJS )
+
+Na tela de adição, é possível cadastrar novos produtos. Veja a captura abaixo:
+
+![Tela de Adição](ProdutoAPI/Public/adicionar_nextjs.png)
+
+## Prints das Telas MVC
+
+### 1. Tela de Listagem ( MVC .Net 8 )
 
 A tela de listagem exibe todos os produtos registrados na aplicação. Veja a captura de tela abaixo:
 
 ![Tela de Listagem](ProdutoAPI/Public/listagem.png)
 
-### 2. Testes Unitários
-
-Abaixo está a captura de tela dos testes unitários sendo executados:
-
-![Testes Unitários](ProdutoAPI/Public/testes_unitarios.png)
-
-### 3. Tela de Edição
+### 2. Tela de Edição ( MVC .Net 8 )
 
 A tela de edição permite alterar os detalhes de um produto. Veja como ela se apresenta:
 
 ![Tela de Edição](ProdutoAPI/Public/editar.png)
 
-### 4. Tela de Adição
+### 3. Tela de Adição ( MVC .Net 8 )
 
 Na tela de adição, é possível cadastrar novos produtos. Veja a captura abaixo:
 
 ![Tela de Adição](ProdutoAPI/Public/adicionar.png)
 
-### 5. Swagger
+## Prints dos Testes Unitários 
+
+Abaixo está a captura de tela dos testes unitários sendo executados:
+
+![Testes Unitários](ProdutoAPI/Public/testes_unitarios.png)
+
+## Print do Swagger 
 
 O Swagger está disponível para facilitar o teste das rotas da API. Abaixo está uma captura de tela da interface do Swagger:
 
