@@ -161,9 +161,10 @@ Este comando irá subir os containers em segundo plano.
 Após rodar os containers, acesse as seguintes interfaces no seu navegador:
 
 
-- Swagger: http://localhost:5000/swagger
-- MVC: http://localhost:5000/mvc
-- Next.js: http://localhost:3000
+- API: http://localhost:8080/
+- Swagger: http://localhost:8080/swagger/
+- MVC: http://localhost:8081/
+- Next.js: http://localhost:3000/
 
 
 Observação: Certifique-se de que as portas mencionadas correspondem às configuradas no seu docker-compose.yml. Caso contrário, ajuste os URLs de acordo com as portas utilizadas.
