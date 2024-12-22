@@ -1,5 +1,7 @@
+version: "3.9"
 
 services:
+  # 1) Banco SQL Server
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: db_produtos
@@ -11,33 +13,48 @@ services:
     networks:
       - net_produtos
 
+  # 2) API
   api:
     build:
-      context: .  # Ponto significa que o Dockerfile está na mesma raiz
-      dockerfile: Dockerfile
+      context: .           
+      dockerfile: Dockerfile.api
     container_name: api_produtos
     depends_on:
       - sqlserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=localhost,1433;Database=DbProdutos2;User Id=sa;Password=Your_strong_password123;Encrypt=True;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=DbProdutos2;User Id=sa;Password=Your_strong_password123;Encrypt=True;TrustServerCertificate=True;
     ports:
-      - "8080:8080"
+      - "8080:80"   
     networks:
       - net_produtos
 
-  # Frontend Next.js
+  # 3) MVC
+  mvc:
+    build:
+      context: .
+      dockerfile: Dockerfile.mvc
+    container_name: mvc_produtos
+    depends_on:
+      - api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiBaseUrl=http://api:80
+    ports:
+      - "8081:80"   
+    networks:
+      - net_produtos
+
+  # 4) Frontend Next.js 
   frontend:
     build:
       context: ./produto-front-nextjs
-      dockerfile: Dockerfile
+      dockerfile: ../Dockerfile.nextjs
     container_name: produto-frontend
     ports:
-      - "3000:3000"  # Mapeia a porta 3000 para o frontend Next.js
+      - "3000:3000"
     networks:
       - net_produtos
-    volumes:
-      - ./produto-front-nextjs:/app
     depends_on:
       - api
 
