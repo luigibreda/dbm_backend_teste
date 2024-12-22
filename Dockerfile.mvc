@@ -1,0 +1,38 @@
+# ----------------------------------------------
+# 1) Build stage
+# ----------------------------------------------
+  FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+  WORKDIR /app
+  
+  # Copia a SLN e csproj
+  COPY ./*.sln ./
+  COPY ./ProdutoCrudSolution.Mvc/*.csproj ./ProdutoCrudSolution.Mvc/
+  COPY ./ProdutoCrudSolution.Domain/*.csproj ./ProdutoCrudSolution.Domain/
+  COPY ./ProdutoCrudSolution.Application/*.csproj ./ProdutoCrudSolution.Application/
+  COPY ./ProdutoCrudSolution.Infrastructure/*.csproj ./ProdutoCrudSolution.Infrastructure/
+  COPY ./ProdutoCrudSolution.Tests/*.csproj ./ProdutoCrudSolution.Tests/
+  
+  RUN dotnet restore ./ProdutoCrudSolution.Mvc/ProdutoCrudSolution.Mvc.csproj
+  
+  # Copiar todo o código
+  COPY . .
+  
+  # Publicar apenas a MVC
+  RUN dotnet publish ./ProdutoCrudSolution.Mvc/ProdutoCrudSolution.Mvc.csproj \
+      -c Release -o /app/publish-mvc
+  
+  # ----------------------------------------------
+  # 2) Runtime stage
+  # ----------------------------------------------
+  FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+  WORKDIR /app
+  
+  # Copia a pasta /app/publish-mvc do stage anterior
+  COPY --from=build /app/publish-mvc .
+  
+  # Expõe porta 80 para o MVC
+  EXPOSE 80
+  ENV ASPNETCORE_URLS=http://+:80
+  
+  ENTRYPOINT ["dotnet", "ProdutoCrudSolution.Mvc.dll"]
+  

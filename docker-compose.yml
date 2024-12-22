@@ -1,57 +1,63 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  # SQL Server
+  # 1) Banco SQL Server
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
+    container_name: db_produtos
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourPassword123!   # Defina uma senha forte
+      - SA_PASSWORD=Your_strong_password123
     ports:
       - "1433:1433"
     networks:
-      - produto-net
-    volumes:
-      - sqlserver-data:/var/opt/mssql
+      - net_produtos
 
-  # Backend .NET 8
-  backend:
+  # 2) API
+  api:
     build:
-      context: ./ProdutoAPI
-      dockerfile: Dockerfile
-    container_name: produto-api
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ProdutoDB;User Id=sa;Password=YourPassword123! # Connection string para o SQL Server
-    ports:
-      - "5000:80"  # Mapeia a porta do backend para 5000
+      context: .           
+      dockerfile: Dockerfile.api
+    container_name: api_produtos
     depends_on:
       - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=DbProdutos2;User Id=sa;Password=Your_strong_password123;Encrypt=True;TrustServerCertificate=True;
+    ports:
+      - "8080:80"   
     networks:
-      - produto-net
-    volumes:
-      - ./ProdutoAPI:/app
+      - net_produtos
 
-  # Frontend Next.js
+  # 3) MVC
+  mvc:
+    build:
+      context: .
+      dockerfile: Dockerfile.mvc
+    container_name: mvc_produtos
+    depends_on:
+      - api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiBaseUrl=http://localhost:8080
+    ports:
+      - "8081:80"   
+    networks:
+      - net_produtos
+
+  # 4) Frontend Next.js 
   frontend:
     build:
       context: ./produto-front-nextjs
-      dockerfile: Dockerfile
+      dockerfile: ../Dockerfile.nextjs
     container_name: produto-frontend
     ports:
-      - "3000:3000"  # Mapeia a porta 3000 para o frontend Next.js
+      - "3000:3000"
     networks:
-      - produto-net
-    volumes:
-      - ./produto-front-nextjs:/app
+      - net_produtos
     depends_on:
-      - backend
+      - api
 
 networks:
-  produto-net:
+  net_produtos:
     driver: bridge
-
-volumes:
-  sqlserver-data:
-    driver: local

@@ -1,0 +1,43 @@
+# ----------------------------------------------
+# 1) Build stage
+# ----------------------------------------------
+    FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+    WORKDIR /app
+    
+    # Copia a SLN e somente csproj necessários (pode copiar também o MVC, 
+    # mas não vai publicar, não tem problema)
+    COPY ./*.sln ./
+    COPY ./ProdutoCrudSolution.Api/*.csproj ./ProdutoCrudSolution.Api/
+    COPY ./ProdutoCrudSolution.Domain/*.csproj ./ProdutoCrudSolution.Domain/
+    COPY ./ProdutoCrudSolution.Application/*.csproj ./ProdutoCrudSolution.Application/
+    COPY ./ProdutoCrudSolution.Infrastructure/*.csproj ./ProdutoCrudSolution.Infrastructure/
+    COPY ./ProdutoCrudSolution.Tests/*.csproj ./ProdutoCrudSolution.Tests/
+    
+    RUN dotnet restore ./ProdutoCrudSolution.Api/*.csproj
+    RUN dotnet restore ./ProdutoCrudSolution.Domain/*.csproj 
+    RUN dotnet restore ./ProdutoCrudSolution.Application/*.csproj 
+    RUN dotnet restore ./ProdutoCrudSolution.Infrastructure/*.csproj
+    RUN dotnet restore ./ProdutoCrudSolution.Tests/*.csproj 
+    
+    # Copiar todo o código
+    COPY . .
+    
+    # Publicar apenas a API
+    RUN dotnet publish ./ProdutoCrudSolution.Api/ProdutoCrudSolution.Api.csproj \
+        -c Release -o /app/publish-api
+    
+    # ----------------------------------------------
+    # 2) Runtime stage
+    # ----------------------------------------------
+    FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+    WORKDIR /app
+    
+    # Copia a pasta /app/publish-api do stage anterior
+    COPY --from=build /app/publish-api .
+    
+    # Se quiser rodar em porta 80 no container:
+    EXPOSE 80
+    ENV ASPNETCORE_URLS=http://+:80
+    
+    ENTRYPOINT ["dotnet", "ProdutoCrudSolution.Api.dll"]
+    

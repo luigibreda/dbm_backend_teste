@@ -1,0 +1,27 @@
+﻿@model List<ProdutoCrudSolution.Mvc.Models.ProdutoViewModel>
+
+<h2>Lista de Produtos</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Data Cadastro</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Model)
+        {
+            <tr>
+                <td>@produto.Nome</td>
+                <td>@produto.Descricao</td>
+                <td>@produto.Preco</td>
+                <td>@produto.DataCadastro</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create">Novo Produto</a>
