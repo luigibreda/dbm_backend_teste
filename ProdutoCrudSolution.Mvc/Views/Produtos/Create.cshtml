@@ -1,0 +1,22 @@
+﻿@model ProdutoCrudSolution.Mvc.Models.ProdutoViewModel
+
+<h2>Criar Produto</h2>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label for="Nome">Nome</label>
+        <input id="Nome" name="Nome" value="@Model?.Nome" />
+    </div>
+
+    <div>
+        <label for="Descricao">Descrição</label>
+        <input id="Descricao" name="Descricao" value="@Model?.Descricao" />
+    </div>
+
+    <div>
+        <label for="Preco">Preço</label>
+        <input id="Preco" name="Preco" value="@Model?.Preco" />
+    </div>
+
+    <button type="submit">Salvar</button>
+</form>
