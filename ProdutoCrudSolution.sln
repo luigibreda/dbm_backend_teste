@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProdutoCrudSolution.Mvc", "ProdutoCrudSolution.Mvc\ProdutoCrudSolution.Mvc.csproj", "{D4825326-A63D-414C-9B0F-E8B5EB07AB4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{8FDA22BC-ACA8-4C8F-A388-5A1DCDD9A7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FDA22BC-ACA8-4C8F-A388-5A1DCDD9A7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FDA22BC-ACA8-4C8F-A388-5A1DCDD9A7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4825326-A63D-414C-9B0F-E8B5EB07AB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4825326-A63D-414C-9B0F-E8B5EB07AB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4825326-A63D-414C-9B0F-E8B5EB07AB4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4825326-A63D-414C-9B0F-E8B5EB07AB4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

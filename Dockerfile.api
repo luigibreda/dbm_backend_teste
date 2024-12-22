@@ -13,7 +13,11 @@
     COPY ./ProdutoCrudSolution.Infrastructure/*.csproj ./ProdutoCrudSolution.Infrastructure/
     COPY ./ProdutoCrudSolution.Tests/*.csproj ./ProdutoCrudSolution.Tests/
     
-    RUN dotnet restore ./ProdutoCrudSolution.sln
+    RUN dotnet restore ./ProdutoCrudSolution.Api/*.csproj
+    RUN dotnet restore ./ProdutoCrudSolution.Domain/*.csproj 
+    RUN dotnet restore ./ProdutoCrudSolution.Application/*.csproj 
+    RUN dotnet restore ./ProdutoCrudSolution.Infrastructure/*.csproj
+    RUN dotnet restore ./ProdutoCrudSolution.Tests/*.csproj 
     
     # Copiar todo o código
     COPY . .
