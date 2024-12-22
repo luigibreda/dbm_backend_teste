@@ -1,13 +1,14 @@
 "use client";
-
-import Breadcrumbs from "@/components/Breadcrumbs";
-import { Produto } from "@/interfaces/produto";
-import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
+import { Button, Input } from "@nextui-org/react";
+import { useProdutos } from "@/hooks/useProdutos";
+import { Produto } from "@/interfaces/produto";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function CriarProdutoPage() {
+  const { criarProduto } = useProdutos();
   const [novoProduto, setNovoProduto] = useState<Produto>({
-    id: 0,
+    id: Date.now(), 
     nome: "",
     descricao: "",
     preco: "",
@@ -15,14 +16,11 @@ export default function CriarProdutoPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNovoProduto({
-      ...novoProduto,
-      [name]: value,
-    });
+    setNovoProduto({ ...novoProduto, [name]: value });
   };
 
   const handleSave = () => {
-    console.log("Produto criado", novoProduto);
+    criarProduto(novoProduto);
   };
 
   return (
@@ -35,28 +33,13 @@ export default function CriarProdutoPage() {
       <Breadcrumbs />
 
       <div className="mb-6">
-        <Input
-          label="Nome"
-          name="nome"
-          value={novoProduto.nome}
-          onChange={handleChange}
-        />
+        <Input label="Nome" name="nome" value={novoProduto.nome} onChange={handleChange} />
       </div>
       <div className="mb-6">
-        <Input
-          label="Descrição"
-          name="descricao"
-          value={novoProduto.descricao}
-          onChange={handleChange}
-        />
+        <Input label="Descrição" name="descricao" value={novoProduto.descricao} onChange={handleChange} />
       </div>
       <div className="mb-6">
-        <Input
-          label="Preço"
-          name="preco"
-          value={novoProduto.preco}
-          onChange={handleChange}
-        />
+        <Input label="Preço" name="preco" value={novoProduto.preco} onChange={handleChange} />
       </div>
 
       <Button color="primary" onClick={handleSave}>
