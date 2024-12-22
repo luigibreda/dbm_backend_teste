@@ -1,5 +1,5 @@
 
-# Documentação do Projeto - API Produto ( AspNet + MVC + NextJS + SqlSerer)
+# Documentação do Projeto - API Produto ( AspNet + MVC + NextJS + SqlServer)
 
 ## Prints das Telas NextJS
 
