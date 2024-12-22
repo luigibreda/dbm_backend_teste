@@ -8,3 +8,13 @@
 /ProdutoAPI.Tests/bin
 /ProdutoAPI.Tests/CRUD.cs
 /ProdutoAPI.Tests/obj
+/ProdutosAPI/bin/Debug/net8.0
+/ProdutosAPI/bin/Release/net8.0/cs
+/ProdutosAPI/bin/Release/net8.0
+/ProdutosAPI/obj
+/ProdutoAPI/bin/Release/net8.0
+/ProdutoAPI/publish
+/ProdutoAPI/publish_output
+/ProdutoAPI/publish_output/cs/Microsoft.CodeAnalysis.CSharp.resources.dll
+/*/bin/
+/*/obj/

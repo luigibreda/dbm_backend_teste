@@ -1,37 +1,30 @@
-version: "3.8"
 
 services:
-  # SQL Server
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
+    container_name: db_produtos
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourPassword123!   # Defina uma senha forte
+      - SA_PASSWORD=Your_strong_password123
     ports:
       - "1433:1433"
     networks:
-      - produto-net
-    volumes:
-      - sqlserver-data:/var/opt/mssql
+      - net_produtos
 
-  # Backend .NET 8
-  backend:
+  api:
     build:
-      context: ./ProdutoAPI
+      context: .  # Ponto significa que o Dockerfile está na mesma raiz
       dockerfile: Dockerfile
-    container_name: produto-api
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ProdutoDB;User Id=sa;Password=YourPassword123! # Connection string para o SQL Server
-    ports:
-      - "5000:80"  # Mapeia a porta do backend para 5000
+    container_name: api_produtos
     depends_on:
       - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=localhost,1433;Database=DbProdutos2;User Id=sa;Password=Your_strong_password123;Encrypt=True;TrustServerCertificate=True;
+    ports:
+      - "8080:8080"
     networks:
-      - produto-net
-    volumes:
-      - ./ProdutoAPI:/app
+      - net_produtos
 
   # Frontend Next.js
   frontend:
@@ -42,16 +35,12 @@ services:
     ports:
       - "3000:3000"  # Mapeia a porta 3000 para o frontend Next.js
     networks:
-      - produto-net
+      - net_produtos
     volumes:
       - ./produto-front-nextjs:/app
     depends_on:
-      - backend
+      - api
 
 networks:
-  produto-net:
+  net_produtos:
     driver: bridge
-
-volumes:
-  sqlserver-data:
-    driver: local
