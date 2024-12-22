@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Button, Input, Spinner } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { useProdutos } from "@/hooks/useProdutos";
 import type { Produto } from "@/interfaces/produto";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
-export default function ProdutoPage({ params }: { params: { id: string } }) {
+export default function ProdutoPage({params}: {params: Promise<{ id: string }>}) {
+  const { id } = use(params);
   const { produtos, editarProduto, loading } = useProdutos();
-  const produtoId = parseInt(params.id);
+  const produtoId = parseInt(id);
 
   const [produto, setProduto] = useState<Produto | null>(null);
   const [produtoEditado, setProdutoEditado] = useState<Produto | null>(null);
@@ -57,17 +58,7 @@ export default function ProdutoPage({ params }: { params: { id: string } }) {
       <>
         <div className="max-w-7xl mx-auto p-6">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-semibold">Editar Produtos</h1>
-            <p className="text-lg text-gray-500">
-              Edite as informações do produto
-            </p>
-          </div>
-
-          <Breadcrumbs />
-
-          <div className="mb-6">
-          <h1 className="text-4xl font-semibold mt-40 text-center uppercase">Produto não encontrado</h1>
-          <p className="text-lg text-gray-500 text-center">Id inválido ou produto excluído, tente novamente.</p>
+            <p>Produto não encontrado</p>
           </div>
         </div>
       </>
